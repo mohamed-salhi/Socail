@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
@@ -70,12 +71,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Followers::class, 'receiver_uuid');
     }
-
-
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_uuid');
+    }
     public function following()
     {
         return $this->hasMany(Followers::class, 'user_uuid');
     }
+    public function stories()
+    {
+        $twentyFourHoursAgo = Carbon::now()->subHours(24);
+
+        return $this->hasMany(Story::class, 'user_uuid')->where('created_at', '>=', $twentyFourHoursAgo);
+    }
+
+
 
     public function fcm_tokens()
     {
@@ -121,9 +132,9 @@ class User extends Authenticatable
         self::creating(function ($item) {
             $item->uuid = Str::uuid();
         });
-        static::addGlobalScope('user', function (Builder $builder) {
-            $builder->where('status', 1);//1==active
-        });
+//        static::addGlobalScope('block', function (Builder $builder) {
+//            $builder->where('status', 1);//1==active
+//        });
 
     }
 }

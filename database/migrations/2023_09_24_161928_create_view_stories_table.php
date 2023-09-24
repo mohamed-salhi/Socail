@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('view_stories', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('status')->default(1);
-            $table->foreignUuid('post_uuid');
             $table->foreignUuid('user_uuid');
-            $table->string('type');
-            $table->string('comment');
-            $table->foreignUuid('comment_uuid')->nullable();
+            $table->foreignUuid('story_uuid');
+
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('view_stories');
     }
 };

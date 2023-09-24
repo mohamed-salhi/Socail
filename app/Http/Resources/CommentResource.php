@@ -27,7 +27,10 @@ class CommentResource extends JsonResource
             'name' =>$this->user->name,
             'user_uuid' =>$this->user->uuid,
             'comment' =>$this->comment,
-            'Responses' =>CommentResource::collection(Comment::query()->where('comment_uuid',$this->uuid)->get()),
+            'is_favorite' =>Favorite::query()->where('content_uuid', $this->uuid)->where('user_uuid', Auth::guard('sanctum')->user()->uuid)->exists(),
+
+            'favorite_count' =>$this->favorites_count,
+            'Responses' =>ReplyResource::collection(Comment::query()->where('comment_uuid',$this->uuid)->withCount('favorites')->get()),
         ];
 
     }

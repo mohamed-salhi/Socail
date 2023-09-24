@@ -15,6 +15,8 @@ class Post extends Model
     protected $guarded=[];
     protected $appends=['attachments'];
 const PATH_IMAGE='upload/post/images';
+    const PATH_VIDEO='upload/post/videos';
+
     public function user(){
         return $this->belongsTo(User::class,'user_uuid');
     }
@@ -22,22 +24,40 @@ const PATH_IMAGE='upload/post/images';
         return $this->hasMany(Comment::class,'post_uuid');
     }
     public function likes(){
-        return $this->hasMany(Like::class,'post_uuid');
+        return $this->hasMany(Like::class,'content_uuid')->where('type','post');
     }
     public function imagesPost()
     {
-        return $this->morphMany(Upload::class, 'imageable');
+        return $this->morphMany(Upload::class, 'imageable')->where('type',Upload::IMAGE);
     }
+    public function videoPost()
+    {
+        return $this->morphOne(Upload::class, 'imageable')->where('type',Upload::VIDEO);
+    }
+    public function favorite()
+    {
+        return $this->hasMany(Favorite::class, 'content_uuid')->where('type',Favorite::POST);
+    }
+
 
     public function getAttachmentsAttribute()
     {
         $attachments = [];
-        foreach ($this->imagesPost as $item) {
-            $attachments[] = [
-                'uuid' => $item->uuid,
-                'attachment' => !is_null(@$item->path) ? asset(Storage::url(@$item->path) ):null,
-            ];
+        if ($this->type=='post'){
+            foreach ($this->imagesPost as $item) {
+                $attachments[] = [
+                    'uuid' => $item->uuid,
+                    'attachment' => !is_null(@$item->path) ? asset(Storage::url(@$item->path) ):null,
+                ];
+            }
+        }elseif ($this->type=='rails'){
+            $attachments[]= !is_null(@$this->videoPost->path) ? asset(Storage::url(@$this->videoPost->path) ):null;
+        }else{
+            $attachments=[];
         }
+
+
+
         return $attachments;
     }
     public static function boot()
