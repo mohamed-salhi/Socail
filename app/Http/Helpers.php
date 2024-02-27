@@ -148,7 +148,7 @@ function UploadImage($file, $path = null, $model, $imageable_id, $update = false
         if ($name) {
             $image = Upload::query()->where('imageable_id', $imageable_id)->where('imageable_type', $model)->where('name', $name)->first();
             if ($image) {
-                Storage::delete('public/' . @$image->path);
+                \Illuminate\Support\Facades\Storage::delete('public/' . @$image->path);
                 return $image->update(
                     [
                         'filename' => $path,

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->foreignUuid('user_uuid');
             $table->foreignUuid('story_uuid');
-
             $table->timestamps();
         });
     }

@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\PaymentGateway\ProcessPaymentController;
-use App\Http\Controllers\Admin\Places\CityController;
-use App\Http\Controllers\Admin\Places\CountryController;
+
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -24,7 +22,7 @@ Route::group(
     ],
     function () {
 
-
+/*
         Route::middleware('auth')->prefix('admin')->group(function () {
 
             Route::get('/', function () {
@@ -117,7 +115,7 @@ Route::group(
             });
 
 
-                 Route::controller(\App\Http\Controllers\Admin\AdminController::class)->name('managers.')->prefix('managers')->group(function () {
+            Route::controller(\App\Http\Controllers\Admin\AdminController::class)->name('managers.')->prefix('managers')->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
                 Route::post('/update', 'update')->name('update');
@@ -154,5 +152,5 @@ Route::group(
 
 
         });
-
+*/
     });

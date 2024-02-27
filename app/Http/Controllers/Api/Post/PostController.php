@@ -33,9 +33,11 @@ class PostController extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules);
+
         if ($validator->fails()) {
             return mainResponse(false, $validator->errors()->first(), [], $validator->errors()->messages(), 101);
         }
+
         $user = Auth::guard('sanctum')->user();
 
         if ($request->hasFile('images')) {
@@ -43,7 +45,6 @@ class PostController extends Controller
                 'content' => $request->get('content'),
                 'user_uuid' => $user->uuid,
                 'type' => 'post'
-
             ]);
             foreach ($request->images as $item) {
                 UploadImage($item, Post::PATH_IMAGE, Post::class, $post->uuid, false, null, Upload::IMAGE);
@@ -54,9 +55,8 @@ class PostController extends Controller
                 'content' => $request->get('content'),
                 'user_uuid' => $user->uuid,
                 'type' => 'rails'
-
             ]);
-                UploadImage($request->video, Post::PATH_VIDEO, Post::class, $post->uuid, false, null, Upload::VIDEO);
+                UploadImage($request->video, Post::PATH_VIDEO , Post::class, $post->uuid, false, null, Upload::VIDEO);
 
         }
         return mainResponse(true, "done", [], [], 201);

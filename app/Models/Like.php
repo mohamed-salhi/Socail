@@ -16,6 +16,10 @@ class Like extends Model
         return $this->belongsTo(Post::class,'post_uuid');
     }
 
+    public function user(){
+        return $this->belongsTo(User::class , 'user_uuid');
+    }
+
 
     public static function boot()
     {

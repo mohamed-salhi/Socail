@@ -22,9 +22,11 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
     protected $primaryKey = 'uuid';
     public $incrementing = false;
-        protected $appends = ['image','followers_count','following_count'];
+    protected $appends = ['image','followers_count','following_count'];
+
     protected $fillable = [
         'name',
         'email',
@@ -33,9 +35,17 @@ class User extends Authenticatable
         'mobile',
         'password',
         'gender',
-        'biography'
+        'biography' ,
+        'status' ,
+        'star'
     ];
     const PATH_IMAGE = 'upload/users/images';
+    const VERIFIED  = 1 ;
+    const UNVERIFIED  = 0 ;
+    const BLOCK  = 2 ;
+    const TEMPO  = 3 ;
+    const UNBLOCK  = 1 ;
+    const NORMAL  = 1 ;
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -86,6 +96,9 @@ class User extends Authenticatable
         return $this->hasMany(Story::class, 'user_uuid')->where('created_at', '>=', $twentyFourHoursAgo);
     }
 
+    public function comments(){
+        return $this->hasMany(Comment::class , 'user_uuid');
+    }
 
 
     public function fcm_tokens()
@@ -116,7 +129,7 @@ class User extends Authenticatable
         if (@$this->imageUser->filename) {
             return !is_null(@$this->imageUser->path) ? asset(Storage::url(@$this->imageUser->path)) : '';
         } else {
-            return url('/') . '/dashboard/app-assets/images/4367.jpg';
+            return url('/') . '/admin_assets/noun-profile-5034901.png';
 
         }
     }

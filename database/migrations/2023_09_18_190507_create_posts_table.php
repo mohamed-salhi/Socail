@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->text('content')->nullable();
+            $table->string('status')->default(1);
             $table->foreignUuid('user_uuid');
             $table->timestamps();
         });

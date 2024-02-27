@@ -14,9 +14,9 @@ class Post extends Model
     public $incrementing = false;
     protected $guarded=[];
     protected $appends=['attachments'];
-const PATH_IMAGE='upload/post/images';
+    const PATH_IMAGE='upload/post/images';
     const PATH_VIDEO='upload/post/videos';
-
+    const BLOCK = 0 ;
     public function user(){
         return $this->belongsTo(User::class,'user_uuid');
     }
@@ -26,14 +26,17 @@ const PATH_IMAGE='upload/post/images';
     public function likes(){
         return $this->hasMany(Like::class,'content_uuid')->where('type','post');
     }
+
     public function imagesPost()
     {
         return $this->morphMany(Upload::class, 'imageable')->where('type',Upload::IMAGE);
     }
+
     public function videoPost()
     {
         return $this->morphOne(Upload::class, 'imageable')->where('type',Upload::VIDEO);
     }
+
     public function favorite()
     {
         return $this->hasMany(Favorite::class, 'content_uuid')->where('type',Favorite::POST);
@@ -55,8 +58,6 @@ const PATH_IMAGE='upload/post/images';
         }else{
             $attachments=[];
         }
-
-
 
         return $attachments;
     }

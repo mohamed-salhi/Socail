@@ -26,7 +26,7 @@ class Admin extends Authenticatable
         'email',
         'password',
     ];
-    const SUPER=1;
+    const SUPER =1;
 
     /**
      * The attributes that should be hidden for serialization.

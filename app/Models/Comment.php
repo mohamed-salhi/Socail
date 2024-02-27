@@ -13,7 +13,7 @@ class Comment extends Model
     protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $guarded=[];
-
+    const BLOCK = 0 ;
     const HIDDEN=2;
     public function post(){
         return $this->belongsTo(Post::class,'post_uuid');
@@ -21,9 +21,11 @@ class Comment extends Model
     public function user(){
         return $this->belongsTo(User::class,'user_uuid');
     }
+
     public function favorites(){
         return $this->hasMany(Favorite::class,'content_uuid')->where('type',Favorite::COMMENT);
     }
+
     public static function boot()
     {
         parent::boot();
